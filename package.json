@@ -1,0 +1,50 @@
+{
+  "name": "krowdfund",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsup",
+    "dev": "node --import=tsx --watch src/server.ts",
+    "prod": "node dist/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "pino": "^9.10.0",
+    "zod": "^4.1.9"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.5.2",
+    "prisma": "^6.16.2",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  },
+  "tsup": {
+    "entry": [
+      "src/server.ts"
+    ],
+    "outDir": "dist",
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "target": "es2020",
+    "sourcemap": true,
+    "clean": true,
+    "dts": true,
+    "splitting": false,
+    "skipNodeModulesBundle": true
+  }
+}
