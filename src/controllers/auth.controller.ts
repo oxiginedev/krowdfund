@@ -3,40 +3,45 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@/generated/prisma";
-import HttpException from "@/exceptions/http.exception";
-import * as jwt from "jsonwebtoken";
+import {
+  AuthenticationException,
+  HttpException,
+  UnauthorizedException,
+} from "@/exceptions/http.exception";
 import { env } from "@/config/env";
-
-const prisma = new PrismaClient();
+import { jwt } from "@/utils/jwt";
+import prisma from "@/config/database";
 
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password } = req.body as z.infer<typeof SignupDto>;
 
-  const existingUser = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email: email },
   });
 
-  if (existingUser) {
+  if (user) {
     throw new HttpException("Account with email already exist");
   }
 
   const salt = await bcrypt.genSalt(12);
   const passwordHash = await bcrypt.hash(password, salt);
 
-  const user = await prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       name: name,
       email: email,
       password: passwordHash,
     },
+    omit: { password: true },
   });
 
-  const accessToken = jwt.sign({}, env.JWT_SECRET);
+  const accessToken = jwt.sign(newUser.id);
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ message: "User signed up successfully", data: { accessToken } });
+  res.status(StatusCodes.CREATED).json({
+    status: true,
+    message: "Registration successful",
+    data: { accessToken },
+  });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -46,15 +51,17 @@ export const login = async (req: Request, res: Response) => {
     where: { email: email },
   });
 
-  if (!user) {
-    throw new HttpException("Invalid credentials");
-  }
+  if (!user) throw new AuthenticationException("Invalid credentials");
 
   const matches = await bcrypt.compare(password, user.password);
 
-  if (!matches) {
-    throw new HttpException("Invalid credentials");
-  }
+  if (!matches) throw new AuthenticationException("Invalid credentials");
 
-  res.json({ message: "User logged in successfully" });
+  const accessToken = jwt.sign(user.id);
+
+  res.json({
+    status: true,
+    message: "User logged in successfully",
+    data: { accessToken },
+  });
 };

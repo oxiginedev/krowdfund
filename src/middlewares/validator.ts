@@ -7,18 +7,26 @@ export function validator(schema: z.ZodObject<any>) {
     try {
       schema.parse(req.body);
       next();
-    } catch (err) {
-      if (err instanceof ZodError) {
-        const errors = err.issues.map((issue) => ({
-          message: `${issue.path.join(".")} is ${issue.message}`,
-        }));
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const errors: Record<string, string[]> = {};
+
+        error.issues.map((issue) => {
+          const field = issue.path.join(".");
+
+          if (!errors[field]) {
+            errors[field] = [];
+          }
+
+          errors[field].push(issue.message);
+        });
 
         return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-          message: "The given data was invalid.",
+          message: "The given data was invalid",
           errors,
         });
       }
-      next(err);
+      next(error);
     }
   };
 }

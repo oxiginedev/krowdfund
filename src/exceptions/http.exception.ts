@@ -1,12 +1,22 @@
 import { StatusCodes } from "http-status-codes";
 
-export default class HttpException extends Error {
-  public message: string;
-  public code: number;
-
-  constructor(message: string, code: number = StatusCodes.BAD_REQUEST) {
+export class HttpException extends Error {
+  constructor(
+    public readonly message: string,
+    public readonly code: number = StatusCodes.BAD_REQUEST
+  ) {
     super(message);
-    this.message = message;
-    this.code = code;
+  }
+}
+
+export class AuthenticationException extends HttpException {
+  constructor(message = "Unauthenticated") {
+    super(message, StatusCodes.UNAUTHORIZED);
+  }
+}
+
+export class UnauthorizedException extends HttpException {
+  constructor(message = "You are unauthorized to access this resource") {
+    super(message, StatusCodes.FORBIDDEN);
   }
 }

@@ -10,6 +10,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
   FRONTEND_URL: z.url().default("http://localhost"),
   JWT_SECRET: z.string(),
+  JWT_EXPIRY: z.string().default("1h"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

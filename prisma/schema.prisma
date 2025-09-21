@@ -33,6 +33,7 @@ model Campaign {
   description   String   @db.Text
   featuredImage String   @db.VarChar(100)
   isPublic      Boolean  @db.UnsignedTinyInt
+  endsAt DateTime @db.Date
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

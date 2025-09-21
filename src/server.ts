@@ -1,5 +1,6 @@
 import { app, logger } from "@/app";
 import { env } from "@/config/env";
+import prisma from "@/config/database";
 
 const server = app.listen(env.PORT, () => {
   logger.info(`Server running on port http://localhost:${env.PORT}`);
