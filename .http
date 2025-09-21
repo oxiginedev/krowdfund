@@ -44,3 +44,17 @@ Content-Type: application/json
 GET http://localhost:5000/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU4NDc1MTIzLCJleHAiOjE3NTg0Nzg3MjN9.JsfgG6wPsSUwhvm9CKgB3t5aJADTPkAPuewuFndzNss
 Content-Type: application/json
+
+###
+POST http://localhost:5000/donations
+Content-Type: application/json
+
+{
+    "campaignId": 1,
+    "amount": 5000,
+    "currency": "NGN",
+    "donorName": "John Doe",
+    "donorEmail": "john.doe@gmail.com",
+    "message": "Keep up the good work!",
+    "isAnonymous": false
+}

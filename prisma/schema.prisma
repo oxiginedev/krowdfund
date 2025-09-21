@@ -44,12 +44,14 @@ model Campaign {
 }
 
 model Donation {
-  id         Int      @id @default(autoincrement())
-  campaignId Int
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
-  donorName  String   @db.VarChar(100)
-  amount     Int      @db.UnsignedInt
-  message    String   @db.VarChar(255)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  campaignId  Int
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+  donorName   String   @db.VarChar(100)
+  donorEmail  String   @db.VarChar(100)
+  amount      Int      @db.UnsignedInt
+  message     String   @db.VarChar(255)
+  isAnonymous Boolean  @db.UnsignedTinyInt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

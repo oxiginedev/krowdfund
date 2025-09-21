@@ -39,6 +39,7 @@ export const fetchCampaign = async (req: Request, res: Response) => {
 
   const campaign = await prisma.campaign.findUnique({
     where: { id: Number.parseInt(id), userId: user.id },
+    include: { donations: true },
   });
 
   if (!campaign) throw new NotFoundException("Campaign not found");

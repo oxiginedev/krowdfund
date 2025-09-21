@@ -5,9 +5,11 @@ import {
   listCampaignDonations,
   listCampaigns,
 } from "@/controllers/campaign.controller";
+import { createDonation } from "@/controllers/donation.controller";
 import { me } from "@/controllers/user.controller";
 import { LoginDto, SignupDto } from "@/dtos/auth";
 import { CreateCampaignDto } from "@/dtos/campaign";
+import { CreateDonationDto } from "@/dtos/donation";
 import { authenticate } from "@/middlewares/authenticate";
 import { validator } from "@/middlewares/validator";
 import { Router } from "express";
@@ -16,6 +18,8 @@ const router = Router();
 
 router.post("/auth/signup", validator(SignupDto), signup);
 router.post("/auth/login", validator(LoginDto), login);
+
+router.post("/donations", validator(CreateDonationDto), createDonation);
 
 router.post(
   "/campaigns",
