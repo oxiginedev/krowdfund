@@ -20,3 +20,9 @@ export class UnauthorizedException extends HttpException {
     super(message, StatusCodes.FORBIDDEN);
   }
 }
+
+export class NotFoundException extends HttpException {
+  constructor(message = "Resource not found") {
+    super(message, StatusCodes.NOT_FOUND);
+  }
+}

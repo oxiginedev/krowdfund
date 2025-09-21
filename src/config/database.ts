@@ -1,13 +1,5 @@
-import { logger } from "@/app";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/generated/prisma";
 
-let prisma: PrismaClient;
-
-try {
-  prisma = new PrismaClient();
-  logger.info("database initialized");
-} catch (error) {
-  logger.error(error);
-}
+const prisma = new PrismaClient();
 
 export default prisma;
